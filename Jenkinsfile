@@ -15,10 +15,11 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                bat 'pip install -r requirements.txt'
-            }
-        }
+    steps {
+        bat '"C:\\Users\\gaura\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -m pip install -r requirements.txt'
+    }
+}
+
 
         stage('Publish') {
             steps {
