@@ -41,7 +41,6 @@ pipeline {
                 principalCredentialId: 'azure-service-principal'
                 }
             }
-        }
 
     }
 }
