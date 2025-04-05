@@ -31,6 +31,7 @@ pipeline {
             steps {
                  azureCLI commands: [[
                     script: '''
+                        echo "Deploying $APP_SERVICE_NAME to $RESOURCE_GROUP"
                         az webapp deploy \
                           --resource-group $RESOURCE_GROUP \
                           --name $APP_SERVICE_NAME \
@@ -38,7 +39,7 @@ pipeline {
                           --type zip
                     ''',
                     exportVariablesString: 'RESOURCE_GROUP,APP_SERVICE_NAME'
-                ]], principalCredentialId: 'azure-service-principal'
+                ]], principalCredentialId: "${AZURE_CREDENTIALS_ID}"
 
                 }
             }
