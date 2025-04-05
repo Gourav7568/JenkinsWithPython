@@ -29,15 +29,16 @@ pipeline {
 
      stage('Deploy') {
             steps {
-                  azureCLI commands: [[
-  script: '''
-    az webapp deploy \
-      --resource-group $RESOURCE_GROUP \
-      --name $APP_SERVICE_NAME \
-      --src-path ./publish.zip \
-      --type zip
-  '''
-]], principalCredentialId: 'azure-service-principal'
+                 azureCLI commands: [[
+                    script: '''
+                        az webapp deploy \
+                          --resource-group $RESOURCE_GROUP \
+                          --name $APP_SERVICE_NAME \
+                          --src-path ./publish.zip \
+                          --type zip
+                    ''',
+                    exportVariablesString: 'RESOURCE_GROUP,APP_SERVICE_NAME'
+                ]], principalCredentialId: 'azure-service-principal'
 
                 }
             }
