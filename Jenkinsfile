@@ -29,17 +29,18 @@ pipeline {
 
      stage('Deploy') {
             steps {
-                 azureCLI commands: [[
-                    script: '''
-                        echo "Deploying $APP_SERVICE_NAME to $RESOURCE_GROUP"
-                        az webapp deploy \
-                          --resource-group $RESOURCE_GROUP \
-                          --name $APP_SERVICE_NAME \
-                          --src-path ./publish.zip \
-                          --type zip
-                    ''',
-                    exportVariablesString: 'RESOURCE_GROUP,APP_SERVICE_NAME'
-                ]], principalCredentialId: "${AZURE_CREDENTIALS_ID}"
+                withCredentials([azureServicePrincipal(credentialsId: 'azure-service-principal')]) {
+                    bat '''
+                    echo Logging into Azure...
+                    az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
+
+                    echo Deploying app to Azure App Service...
+                    az webapp deploy ^
+                        --resource-group %RESOURCE_GROUP% ^
+                        --name %APP_SERVICE_NAME% ^
+                        --src-path app.zip ^
+                        --type zip
+                    '''
 
                 }
             }
